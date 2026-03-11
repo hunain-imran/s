@@ -13,8 +13,11 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",
+    "express-jsdoc-swagger": "^1.8.0",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.2",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }

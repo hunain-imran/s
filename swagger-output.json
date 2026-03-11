@@ -1,0 +1,153 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+      
+      
+  "/api/register": {
+  "post": {
+    "summary": "Register a new user",
+    "description": "Creates a new user with name, email, password, and address.",
+    "parameters": [
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "example": "John Doe" },
+            "email": { "type": "string", "example": "john@example.com" },
+            "password": { "type": "string", "example": "password123" },
+            "address": { "type": "string", "example": "123 Street" }
+          },
+          "required": ["name", "email", "password"]
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "User created successfully",
+        "examples": { "application/json": { "name": "John", "email": "john@example.com", "role": "normal" } }
+      },
+      "400": { "description": "Email already registered" },
+      "500": { "description": "Server error" }
+    }
+  }
+},
+  
+  
+  
+  
+  
+"/api/login": {
+  "post": {
+    "summary": "User login",
+    "description": "Authenticates a user using email and password. Returns a JWT token.",
+    "parameters": [
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "email": { "type": "string", "example": "john@example.com" },
+            "password": { "type": "string", "example": "password123" }
+          },
+          "required": ["email", "password"]
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Login successful, returns JWT token",
+        "examples": {
+          "application/json": { "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+        }
+      },
+      "400": {
+        "description": "Invalid credentials (wrong email or password)",
+        "examples": {
+          "application/json": { "msg": "User not found" }
+        }
+      },
+      "401": {
+        "description": "Unauthorized, missing or invalid token",
+        "examples": {
+          "application/json": { "msg": "No token provided" }
+        }
+      }
+    }
+  }
+},
+
+
+
+
+
+
+"/api/users": {
+  "get": {
+    "summary": "Get all users (admin only)",
+    "description": "Retrieves a list of all registered users. Access is restricted to users with the 'admin' role. Requires a valid JWT token in the Authorization header.",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "required": true,
+        "type": "string",
+        "description": "JWT token, format: Bearer <token>",
+        "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    ], "security": [
+          { "BearerAuth": [] }
+        ],
+    "responses": {
+      "200": {
+        "description": "List of users retrieved successfully",
+        "examples": {
+          "application/json": [
+            {
+              "name": "John Doe",
+              "email": "john@example.com",
+              "address": "123 Street",
+              "role": "normal"
+            },
+            {
+              "name": "Jane Smith",
+              "email": "jane@example.com",
+              "address": "456 Avenue",
+              "role": "admin"
+            }
+          ]
+        }
+      },
+      "401": {
+        "description": "Unauthorized, missing or invalid token",
+        "examples": {
+          "application/json": { "msg": "No token provided" }
+        }
+      },
+      "403": {
+        "description": "Forbidden, user is not admin",
+        "examples": {
+          "application/json": { "msg": "Admin only" }
+        }
+      }
+    }
+  }
+}
+
+  
+  }
+}
